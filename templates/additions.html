@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню</title>
+    <style>
+        @keyframes slideIn {
+            0% {
+              transform: translateY(-100%);
+            }
+            100% {
+              transform: translateY(0);
+            }
+          }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0px;
+            padding: 0px;
+            background-color: #F6F3E4;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background-color: #F6F3E4;
+            color: #333; /* Используем тёмный оттенок */
+            padding: 0px;
+            text-align: center;
+        }
+        
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto; /* Увеличиваем высоту слайда */
+        }
+        
+        .swiper-container {
+            width: 100%;
+            height: auto; /* Мы не задаем фиксированную высоту, используем auto */
+        }
+        
+        .menu {
+            padding: 20px;
+            background-color: #F6F3E4;
+        }
+        
+        h2 {
+            color: #333; /* Используем тёмный оттенок */
+            border-bottom: 2px solid #333;
+            padding-bottom: 0px;
+        }
+        
+        h {
+            color: #FABE0A;
+            border-bottom: 2px solid #333;
+            padding-bottom: 0px;
+            font-size: 35px;
+        }
+        
+        h3 {
+            color: #333; /* Используем тёмный оттенок */
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .category {
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            background-color: #F6F3E4;
+        }
+        
+        .sauce {
+            width: auto;
+            height: auto;
+            margin: 5px;
+            border-radius: 10px;
+            background-color: #F6F3E4;
+            text-align: left;
+            display: block;
+        }
+        
+        .sauce h2 {
+            font-size: 18px;
+            margin-top: 2px;
+            color: #333;
+            padding: 0px;
+            text-align: left;
+        }
+        
+        .sauce span {
+            margin-right: 1px;
+            margin-left: 1px;
+            font-size: 14px;
+            color: #000;
+            margin-top: 1px;
+            padding: 4px;
+        }
+        
+        .sauce .price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 2px;
+        }
+        
+        .sauce .add-to-cart,
+        .sauce .cart-controls {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between; /* Добавлено выравнивание кнопок и текста */
+            align-items: center; /* Выравнивание по вертикали */
+        }
+        
+        .sauce button {
+
+            background-color: #5373fc;
+            color: #F6F3E4;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px; /* Уменьшаем размер шрифта */
+            cursor: pointer;
+        }
+        
+        .sauce button:hover {
+            background-color: #0056b3;
+        }
+
+
+
+
+        .drink {
+            width: auto;
+            height: auto;
+            margin: 5px;
+            border-radius: 10px;
+            background-color: #F6F3E4;
+            text-align: left;
+            display: block;
+        }
+        
+        .drink h2 {
+            font-size: 18px;
+            margin-top: 2px;
+            color: #333;
+            padding: 0px;
+            text-align: left;
+        }
+        
+        .drink span {
+            margin-right: 1px;
+            margin-left: 1px;
+            font-size: 14px;
+            color: #000;
+            margin-top: 1px;
+            padding: 4px;
+        }
+        
+        .drink .price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 2px;
+        }
+        
+        .drink .add-to-cart,
+        .drink .cart-controls {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between; /* Добавлено выравнивание кнопок и текста */
+            align-items: center; /* Выравнивание по вертикали */
+        }
+        
+        .drink button {
+
+            background-color: #5373fc;
+            color: #F6F3E4;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px; /* Уменьшаем размер шрифта */
+            cursor: pointer;
+        }
+        
+        .drink button:hover {
+            background-color: #0056b3;
+        }
+
+
+
+
+        
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+        
+        a:focus, a:active {
+            outline: none;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        
+        .cart-dropdown {
+    background-color: #F5F2E3;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    text-align: center;
+
+    position: fixed;
+    width: 100%;
+    left: calc(50%-0.5*var(--cart-dropdown.width));
+    z-index: 1000;
+        }
+        
+        .cart-dropdown.active {
+            transform: translateY(0); /* Показываем его при активации */
+            opacity: 1;
+            color: #333; /* Используем светлый оттенок */
+            position: relative;
+            z-index: 1000;
+
+            animation: slideIn 0.3s forwards;
+        }
+        
+        #cart-toggle {
+            position: center;
+            top: 0px;
+            right: 20px;
+            background-color: rgba(244, 67, 54, 0); /* Или background-color: transparent; */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10000;
+            transition: top 0.3s ease-in-out;
+            font-size: 50px; /* Размер шрифта в пикселях, вы можете выбрать нужный вам размер */
+        }
+        
+        
+        #cart-toggle:hover + #cart-dropdown,
+        #cart-dropdown:hover {
+            
+        }
+        
+        .main-content {
+            margin-top: 100px;
+        }
+        
+        .cart-item-quantity-normal {
+            font-size: 30px;
+            padding: 5px;
+            color: #333;
+        }
+        
+        .cart-controls button {
+            align-self: flex-end;
+        }
+
+        .checkout-button {
+            display: none; /* Изначально скрываем кнопку */
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 10px; /* Отступ от верхнего элемента */
+            margin: 10px auto;
+        }
+        
+        .checkout-button:hover {
+            background-color: #45a049;
+        }
+
+        .cart-item-quantity {
+            width: 50px; /* Задайте нужную ширину */
+        }
+
+        .add-item {
+            z-index: 1000; /* Примерное значение, можно увеличить при необходимости */
+        }
+
+
+
+
+        .container {
+            position: relative;
+            width: auto;
+            height: auto;
+            border-radius: 10px; /* Радиус закругления углов */
+            background-color: #F6F3E4; /* Цвет фона контейнера */
+            padding: 20px; /* Внутренний отступ контейнера */
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.1); /* Тень контейнера */
+        }
+
+
+
+
+
+
+
+
+
+        .radio {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .rad-label {
+            display: flex;
+            align-items: center;
+            border-radius: 100px;
+            padding: 0px 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: .3s;
+            width: 70px;
+            position: relative; /* Добавляем позиционирование для псевдоэлемента */
+        }
+        
+        .rad-label::after {
+            content: attr(value);
+            position: relative;
+            margin-left: 5px;
+        }
+        
+        .rad-label::before {
+            content: attr(value);
+            position: relative;
+            z-index: 2; /* Задаем позицию под флагом радиокнопки */
+            margin-left: 5px;
+        }
+        
+        .rad-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1px;
+            height: 1px;
+            opacity: 1;
+            z-index: 1;
+            font-weight: bold;
+        }
+        
+        .rad-design {
+            width: 70px; /* Устанавливаем ширину равной 70px */
+            height: 22px;
+            border-radius: 100px;
+            background: linear-gradient(to right bottom, hsl(154, 97%, 62%), hsl(225, 97%, 62%));
+            position: absolute;
+            opacity: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .rad-design::before {
+            content: '';
+            display: inline-block;
+            width: inherit;
+            height: inherit;
+            border-radius: inherit;
+            background: hsl(0, 0%, 90%);
+            transform: scale(1.1);
+            transition: .3s;
+        }
+        
+        .rad-input:checked + .rad-design::before {
+            transform: scale(0);
+        }
+        
+        .rad-input ~ .rad-text {
+            color: hsl(0, 0%, 40%);
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          .dropdown-select {
+            position: relative;
+          }
+          
+          .dropdown-select .e-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+          
+          .dropdown-select .e-burger span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background-color: #333;
+            margin-bottom: 4px;
+            transition: transform 0.3s ease;
+          }
+          
+          .dropdown-select .e-burger.open span:nth-child(1) {
+            transform: translateY(5px) rotate(45deg);
+          }
+          
+          .dropdown-select .e-burger.open span:nth-child(2) {
+            opacity: 0;
+          }
+          
+          .dropdown-select .e-burger.open span:nth-child(3) {
+            transform: translateY(-5px) rotate(-45deg);
+          }
+          
+          .dropdown-select .e-list {
+            display: none;
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 5px 0;
+            width: 100%;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+          }
+          
+          .dropdown-select.open .e-list {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+          }
+          
+          .dropdown-select .e-list li {
+            list-style: none;
+          }
+          
+          .dropdown-select .e-list li a {
+            display: block;
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+          }
+          
+          .dropdown-select .e-list li a:hover {
+            background-color: #f0f0f0;
+            color: #fff;
+          }
+
+        
+    </style>
+</head>
+<body>
+    <h2>У вас есть  <span id="sauce-count">{{ session['total_sauces'] }}</span> соусов на выбор:</h2>
+    <ul id="sauces">
+        {% for sauce in sauces %}
+            <div class="sauce">{{ sauce.dish_name }} <button class="remove-item" onclick="decrement('{{ sauce.dish_name }}')">-</button><span id="{{ sauce.dish_name }}">0</span><button class="add-item" onclick="increment('{{ sauce.dish_name }}')">+</button></div>
+        {% endfor %}
+    </ul> 
+
+    <h2>У вас есть <span id="drink-count">{{session['total_drinks']}}</span> напитков на выбор:</h2>
+    <ul id="drinks">
+        <div class="drink">Газировка 330мл. <button onclick="decrementdr('soda')">-</button><span id="soda">0</span><button onclick="incrementdr('soda')">+</button></div>
+        <div class="drink">Сок 200мл. <button onclick="decrementdr('juice')">-</button><span id="juice">0</span><button onclick="incrementdr('juice')">+</button></div>
+    </ul>
+
+    <ul>
+        <div>
+            <button onclick="saveDishToSession()" value="Перейти к оплате">Перейти к оплате</button>
+        </div>
+    </ul>
+
+    <script>
+        let initialSaucesCount; // Определение переменной в области видимости скрипта
+
+        function increment(id) {
+            const element = document.getElementById(id);
+            let count = parseInt(element.innerText);
+            console.log(count);
+            let totalSaucesCount = 0;
+            
+            // Получаем все элементы span с классом 'sauce'
+            const sauceElements = document.querySelectorAll('.sauce span');
+            
+            // Проходим по каждому элементу и добавляем его значение к общей сумме
+            sauceElements.forEach(sauceElement => {
+                totalSaucesCount += parseInt(sauceElement.innerText);
+            });
+            
+            // Проверяем, что добавление не превысит общее количество соусов
+            if (totalSaucesCount < initialSaucesCount) {
+                count++;
+                element.innerText = count;
+            }
+        }
+    
+        function decrement(id) {
+            const element = document.getElementById(id);
+            let count = parseInt(element.innerText);
+            if (count > 0) {
+                count--;
+                element.innerText = count;
+            }
+        }
+
+
+
+
+
+
+        function incrementdr(id) {
+            const element = document.getElementById(id);
+            let count = parseInt(element.innerText);
+            let totalDrinksCount = 0;
+            
+            // Получаем все элементы span с классом 'sauce'
+            const drinkElements = document.querySelectorAll('.drink span');
+            
+            // Проходим по каждому элементу и добавляем его значение к общей сумме
+            drinkElements.forEach(drinkElements => {
+                totalDrinksCount += parseInt(drinkElements.innerText);
+            });
+            
+            // Проверяем, что добавление не превысит общее количество соусов
+            if (totalDrinksCount < initialDrinksCount) {
+                count++;
+                element.innerText = count;
+            }
+        }
+    
+        function decrementdr(id) {
+            const element = document.getElementById(id);
+            let count = parseInt(element.innerText);
+            if (count > 0) {
+                count--;
+                element.innerText = count;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/get_cart_contents')
+                .then(response => response.json())
+                .then(data => {
+                    const dishNames = data.map(item => item.dish_name);
+                    const counts = data.map(item => item.quantity);
+                    fetchSauces(dishNames, counts);
+                })
+                .catch(error => console.error('Ошибка при получении данных корзины:', error));
+    
+                function fetchSauces(dishNames, counts) {        
+                    fetch('/get_sauces_drinks_count', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ dishNames: dishNames, counts: counts })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Обработка полученного общего количества напитков
+                        const totalDrinks = data.total_drinks;
+                        const totalSauces = data.total_sauces;
+
+                        initialDrinksCount = totalDrinks; // Присвоение значения initialSaucesCount
+                        initialSaucesCount = totalSauces; // Присвоение значения initialSaucesCount
+
+                        console.log(initialDrinksCount);
+                        console.log(initialSaucesCount);
+
+                        sessionStorage.setItem('totalDrinks', totalDrinks);
+                        sessionStorage.setItem('totalSauces', totalSauces);
+
+                        
+                    })
+                    .catch(error => console.error('Ошибка при получении общего количества напитков:', error));
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function saveDishToSession() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+        
+            // Получение значения параметра 'chat_id'
+            const chatId = urlParams.get('chat_id');
+            console.log('Chat ID:', chatId);
+        
+            let dishData = []; // Инициализируем dishData как пустой массив
+
+            // Добавляем данные о соусах в массив dishData
+            const sauces = document.querySelectorAll('.sauce span');
+            sauces.forEach(sauce => {
+                const sauceName = sauce.id;
+                const sauceCount = parseInt(sauce.innerText);
+                console.log(sauceName);
+                console.log(sauceCount);
+                console.log('----------------------------');
+                if (sauceCount > 0) {
+                    // Создаем новый элемент и добавляем его в массив dishData
+                    dishData.push({
+                        name: sauceName,
+                        count: sauceCount
+                    });
+                }
+            });
+            
+            // Добавляем данные о напитках в массив dishData
+            const drinks = document.querySelectorAll('.drink span');
+            drinks.forEach(drink => {
+                let drinkName = drink.id;
+                const drinkCount = parseInt(drink.innerText);
+                if (drinkName=='soda'){
+                    drinkName='Газировка 330 мл.';
+                }
+                else if (drinkName=='juice'){
+                    drinkName='Сок 200 мл.';
+                }
+                console.log(drinkName);
+                console.log(drinkCount);
+                console.log('----------------------------');
+                if (drinkCount > 0) {
+                    // Создаем новый элемент и добавляем его в массив dishData
+                    dishData.push({
+                        name: drinkName,
+                        count: drinkCount
+                    });
+                }
+            });
+        
+            fetch('/save_selected_dish', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ dish: dishData })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Содержимое корзины успешно добавлено в сессию');
+                    // Переходим на страницу с содержимым корзины, передавая chat_id
+                    window.location.href = '/page1?chat_id=' + chatId;
+                } else {
+                    console.error('Произошла ошибка при добавлении содержимого корзины в сессию');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
